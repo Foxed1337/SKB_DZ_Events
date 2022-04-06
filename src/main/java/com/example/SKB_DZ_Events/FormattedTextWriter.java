@@ -30,6 +30,7 @@ public class FormattedTextWriter {
             LOGGER.info("Start writing to the file");
             doExpensiveWork();
             publisher.publishEvent(new FileEvent(this, path.toAbsolutePath().toString()));
+            LOGGER.info("[event - FileEvent - published]");
             writer.write(formattedText);
         } catch (IOException | WritingFileException e) {
             LOGGER.info(e.getMessage());

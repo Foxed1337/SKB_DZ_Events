@@ -24,6 +24,7 @@ public class EventsListener {
 
     @EventListener
     public void handleWritingEvent(WritingEvent event) {
+        LOGGER.info("[event handling - WritingEvent]");
         String text = event.getTextToWrite();
         for (int i = 0; i < text.length(); i++) {
             try {
@@ -38,17 +39,20 @@ public class EventsListener {
     @EventListener
     @Async
     public void handleFormattingEvent(FormattingEvent event) {
+        LOGGER.info("[event handling - FormattingEvent]");
         System.out.println("Formatted text - " + event.getFormattedText());
         writer.writeToFile(event.getFormattedText());
     }
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleTransactionalIsSuccessfully(FileEvent event) {
+        LOGGER.info("[event handling - handleTransactionalIsSuccessfully]");
         LOGGER.info("File was created successfully and formatted text was written to the file");
     }
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_ROLLBACK)
     public void handleTransactionalIsNotSuccessfully(FileEvent event) {
+        LOGGER.info("[event handling - handleTransactionalIsNotSuccessfully]");
         File file = new File(event.getFilePath());
         if (file.delete()) {
             LOGGER.info("File with path: " + event.getFilePath() + " has been deleted");

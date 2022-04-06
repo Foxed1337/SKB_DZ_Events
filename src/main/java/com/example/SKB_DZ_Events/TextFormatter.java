@@ -20,7 +20,9 @@ public class TextFormatter {
     public String formatText(String text) {
         String formattedText = text.toUpperCase(Locale.ROOT).replace(' ', '_');
         publisher.publishEvent(new FormattingEvent(this, formattedText));
+        LOGGER.info("[event - FormattingEvent - published]");
         publisher.publishEvent(new WritingEvent(this, formattedText));
+        LOGGER.info("[event - WritingEvent - published]");
         return formattedText;
     }
 }
